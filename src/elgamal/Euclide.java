@@ -83,9 +83,9 @@ public class Euclide {
         return results;
     }
 
-    public void testThousandTimes(BigInteger p) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
+    public void testTenThousandTimes(BigInteger p) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
         BigInteger a;
-        for (int i = 0; i < 1000; i++){
+        for (int i = 0; i < 10000; i++){
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
             a = BigInteger.valueOf(random.nextInt());
 
