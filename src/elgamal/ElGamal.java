@@ -2,12 +2,12 @@
  * ElGamal.java
  * ElGamal
  *
- * Created by Valerie Marissens Cueva on 28/1/2021.
+ * Created by Valerie Marissens Cueva on 29/1/2021.
  * Copyright (c) 2021.
  *
  */
 
-package com.utils;
+package elgamal;
 
 public class ElGamal {
 }
