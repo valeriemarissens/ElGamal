@@ -44,6 +44,24 @@ public class ModularExponentiation {
         }
         return result;
 
+        /*
+        if (a == 1)
+            return g;
+        else{
+
+            // a est pair.
+            if (a % 2 == 0) {
+                // pow(g**2, a/2)
+                return expMod(p, g.pow(2).mod(p), a / 2);
+            }
+
+            // a est impair.
+            else {
+                // g * pow(g**2, (a-1)/2)
+                return g.multiply(expMod(p, g.pow(2).mod(p), (a - 1) / 2)).mod(p);
+            }
+        }
+         */
     }
 
     public void testTenThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
