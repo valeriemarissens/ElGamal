@@ -9,7 +9,7 @@
 
 package elgamal.tests;
 
-import elgamal.ModularExponetiation;
+import elgamal.ModularExponentiation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,12 +17,12 @@ import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ModularExponetiationTest {
-    private ModularExponetiation m;
+class ModularExponentiationTest {
+    private ModularExponentiation m;
 
     @BeforeEach
     void setUp() {
-        m = new ModularExponetiation();
+        m = new ModularExponentiation();
     }
 
     @Test

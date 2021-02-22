@@ -8,12 +8,13 @@
  */
 
 import elgamal.Euclide;
-import elgamal.ModularExponetiation;
+import elgamal.ModularExponentiation;
 import elgamal.exceptions.EuclideException;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Arrays;
 
 public class Main {
 
@@ -22,13 +23,19 @@ public class Main {
         BigInteger p = new BigInteger(hexa, 16);
         BigInteger g = BigInteger.valueOf(2);
         Euclide euclide = new Euclide();
-        ModularExponetiation modularExponetiation = new ModularExponetiation();
+        ModularExponentiation modularExponentiation = new ModularExponentiation();
 
-        try {
-            euclide.testTenThousandTimes(p);
+        BigInteger a = BigInteger.valueOf(2);
+        BigInteger b = BigInteger.valueOf(5);
+        BigInteger c = BigInteger.valueOf(3);
+
+        System.out.println(modularExponentiation.expMod(c,b,3));
+
+        //try {
+            //euclide.testTenThousandTimes(p);
             //modularExponetiation.testTenThousandTimes(p, g);
-        } catch (NoSuchProviderException | NoSuchAlgorithmException | EuclideException e) {
-            e.printStackTrace();
-        }
+        //} catch (NoSuchProviderException | NoSuchAlgorithmException | EuclideException e) {
+        //    e.printStackTrace();
+        //}
     }
 }

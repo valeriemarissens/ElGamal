@@ -90,7 +90,7 @@ public class Euclide {
             a = BigInteger.valueOf(random.nextInt());
 
             // todo : valeur absolue nécessaire ?
-            euclide(a.abs(), p);
+            System.out.println(Arrays.toString(euclide(a.abs(), p)));
         }
     }
 

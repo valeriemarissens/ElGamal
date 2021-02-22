@@ -16,9 +16,9 @@ import java.security.SecureRandom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ModularExponetiation {
+public class ModularExponentiation {
 
-    public ModularExponetiation(){}
+    public ModularExponentiation(){}
 
     /**
      *
@@ -28,22 +28,22 @@ public class ModularExponetiation {
      * @return A = g**a mod p
      */
     public BigInteger expMod(BigInteger p, BigInteger g, int a){
-        if (a == 1)
-            return g;
-        else{
+        BigInteger result = BigInteger.ONE;
+        g = g.mod(p);
 
-            // a est pair.
-            if (a % 2 == 0) {
-                // pow(g**2, a/2)
-                return expMod(p, g.pow(2).mod(p), a / 2);
-            }
-
-            // a est impair.
-            else {
-                // g * pow(g**2, (a-1)/2)
-                return g.multiply(expMod(p, g.pow(2).mod(p), (a - 1) / 2)).mod(p);
-            }
+        if(g.intValue() == 0){
+            return BigInteger.ZERO;
         }
+
+        while(a > 0){
+            if((a & 1) != 0)    // Si a est impair
+                result = (result.multiply(g)).mod(p);
+
+            a = a >> 1;     // a = a/2
+            g = (g.multiply(g)).mod(p);
+        }
+        return result;
+
     }
 
     public void testTenThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
@@ -52,12 +52,13 @@ public class ModularExponetiation {
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
             a = random.nextInt();
 
-            BigInteger result = expMod(p, g, a);
-            if (i<10)
+            BigInteger result = expMod(p, g, Math.abs(a));
+            //if (i<10)
                 System.out.println(result);
 
             // todo : c'est bien ce test ?
             //assertEquals(g.pow(a.intValue()).mod(p), result);
+            //test => g.pow(a).mod(p);
         }
     }
 }
