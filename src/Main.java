@@ -68,6 +68,7 @@ public class Main {
 
         System.out.println("\n\n\n");
         euclide.testTenThousandTimes(p);
+        modularExponentiation.testTenThousandTimes(p,g);
 
     }
 }

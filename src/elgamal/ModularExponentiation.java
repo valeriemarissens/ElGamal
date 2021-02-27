@@ -9,6 +9,10 @@
 
 package elgamal;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -65,18 +69,38 @@ public class ModularExponentiation {
     }
 
     public void testTenThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
+
         int a;
-        for (int i = 0; i < 10000; i++){
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-            a = random.nextInt();
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 
-            BigInteger result = expMod(p, g, Math.abs(a));
-            //if (i<10)
-                System.out.println(result);
+        System.out.println("Test de la fonction expMod() : \n");
+        try {
+            File file = new File("test.txt");
 
-            // todo : c'est bien ce test ?
-            //assertEquals(g.pow(a.intValue()).mod(p), result);
-            //test => g.pow(a).mod(p);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("Test de la fonction expMod()  : \n");
+            for (int i = 0; i < 10000; i++) {
+                a = Math.abs(random.nextInt());
+                bufferedWriter.write("a = "+ a + "     et      ");
+                bufferedWriter.write("expMod(p, g, a) = " + expMod(p, g, a) + "\n");
+
+                if(i < 5){
+                    System.out.println("a = "+ a);
+                    System.out.println("expMod(p, g, a) = " + expMod(p, g, a) + "\n");
+                }
+            }
+            System.out.println("L'ensemble des tests se trouvent dans le fichier test.txt \n");
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
+
 }

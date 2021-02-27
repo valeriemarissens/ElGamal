@@ -119,11 +119,7 @@ public class Euclide {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-
-
 
 
 }
