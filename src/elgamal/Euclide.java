@@ -11,6 +11,10 @@ package elgamal;
 
 import elgamal.exceptions.EuclideException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -85,14 +89,41 @@ public class Euclide {
 
     public void testTenThousandTimes(BigInteger p) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
         BigInteger a;
-        for (int i = 0; i < 10000; i++){
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-            a = BigInteger.valueOf(random.nextInt());
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 
-            // todo : valeur absolue nécessaire ?
-            System.out.println(Arrays.toString(euclide(a.abs(), p)));
+        System.out.println("Test de la fonction Euclide() : \n");
+       try {
+            File file = new File("test.txt");
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("Test de la fonction Euclide()  : \n");
+            for (int i = 0; i < 10000; i++) {
+                a = BigInteger.valueOf(Math.abs(random.nextInt()));
+                bufferedWriter.write("a = "+ a + "     et      ");
+                BigInteger[] results = euclide(a, p);
+                bufferedWriter.write("a.u + p.v = " + (a.multiply(results[0])).add(p.multiply(results[1])) + "\n");
+
+                if(i < 5){
+                    System.out.println("a = "+ a);
+                    System.out.println("a.u + p.v = " + (a.multiply(results[0])).add(p.multiply(results[1])) + "\n");
+                }
+            }
+            System.out.println("L'ensemble des tests se trouvent dans le fichier test.txt \n");
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
+
+
+
 
 
 }

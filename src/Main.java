@@ -66,6 +66,8 @@ public class Main {
         System.out.println("Le message déchiffré est : " + message.intValue());
 
 
+        System.out.println("\n\n\n");
+        euclide.testTenThousandTimes(p);
 
     }
 }
