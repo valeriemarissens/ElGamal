@@ -34,7 +34,6 @@ public class ElGamal {
 
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
         int x = Math.abs(random.nextInt());
-        // int x = Math.abs(random.nextInt((p.intValue() - 2)) - 2 + 1) + 2;
 
         BigInteger privateKey = BigInteger.valueOf(x);
         BigInteger publicKey = modularExponentiation.expMod(p,g,x);
@@ -50,7 +49,6 @@ public class ElGamal {
     public BigInteger[] Encrypt(BigInteger p , BigInteger g, BigInteger publicKey, BigInteger m) throws NoSuchProviderException, NoSuchAlgorithmException {
 
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        //int r = Math.abs(random.nextInt((p.intValue() - 2)) - 2 + 1) + 2;
         int r = Math.abs(random.nextInt());
         BigInteger y = modularExponentiation.expMod(p, publicKey, r);
 
