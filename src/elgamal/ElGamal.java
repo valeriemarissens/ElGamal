@@ -75,7 +75,7 @@ public class ElGamal {
 
 
 
-    public void testTenThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
+    public void testThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
         BigInteger message;
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 
