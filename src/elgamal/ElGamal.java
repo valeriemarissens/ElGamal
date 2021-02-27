@@ -11,6 +11,10 @@ package elgamal;
 
 import elgamal.exceptions.EuclideException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -67,6 +71,54 @@ public class ElGamal {
         BigInteger m = (C.multiply(euclide.euclide(D,p)[0])).mod(p);
 
         return m;
+    }
+
+
+
+    public void testTenThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
+        BigInteger message;
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+
+        System.out.println("Test du chiffrement ElGamal : \n");
+        try {
+            File file = new File("test.txt");
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("Test du chiffrement ElGamal  : \n");
+            for (int i = 0; i < 100; i++) {
+                message = BigInteger.valueOf(Math.abs(random.nextInt()));
+                BigInteger[] keys = KeyGen(p,g);
+                BigInteger bobPrivateKey = keys[0];
+                BigInteger bobPublicKey = keys[1];
+
+                BigInteger[] encrypt = Encrypt(p,g, bobPublicKey, message);
+                BigInteger messageChiffreC = encrypt[0];
+                BigInteger messageChiffreB = encrypt[1];
+
+                bufferedWriter.write("Le message est : " + message.intValue() + "\n");
+                bufferedWriter.write("Le message chiffré est : C  : " + messageChiffreC.intValue() +  "   -   et B  : " + messageChiffreB.intValue() + "\n");
+                message = Decrypt(messageChiffreC,messageChiffreB, bobPrivateKey.intValue(), p);
+                bufferedWriter.write("Le message déchiffré est : " + message.intValue() + "\n\n");
+
+                if(i < 5){
+                    System.out.println("Le message est : " + message.intValue());
+                    System.out.println("Le message chiffré est :  C  = " + messageChiffreC.intValue() +  "      et B  = " + messageChiffreB.intValue());
+                    message = Decrypt(messageChiffreC,messageChiffreB, bobPrivateKey.intValue(), p);
+                    System.out.println("Le message déchiffré est : " + message.intValue() + "\n");
+                }
+
+            }
+            System.out.println("L'ensemble des tests se trouvent dans le fichier test.txt \n");
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
