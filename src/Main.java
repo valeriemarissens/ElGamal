@@ -33,5 +33,6 @@ public class Main {
         modularExponentiation.testTenThousandTimes(p,g);
         elGamal.testThousandTimes(p,g);
 
+        elGamal.testHomomorphie(p,g);
     }
 }

@@ -122,4 +122,32 @@ public class ElGamal {
     }
 
 
+    public void testHomomorphie(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
+        BigInteger message1, message2;
+        BigInteger[] chiffre1, chiffre2;
+
+        //Création des clés
+        BigInteger[] keys = KeyGen(p,g);
+        BigInteger bobPrivateKey = keys[0];
+        BigInteger bobPublicKey = keys[1];
+
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+        message1 = BigInteger.valueOf(Math.abs(random.nextInt()));
+        message2 = BigInteger.valueOf(Math.abs(random.nextInt()));
+        System.out.println("m1 = " + message1);
+        System.out.println("m2 = " + message2);
+
+        chiffre1 = Encrypt(p,g, bobPublicKey, message1);
+        chiffre2 = Encrypt(p,g, bobPublicKey, message2);
+
+        BigInteger C = (chiffre1[0].multiply(chiffre2[0])).mod(p);
+        BigInteger B = (chiffre1[1].multiply(chiffre2[1])).mod(p);
+
+        BigInteger messageTotal = Decrypt(C,B, bobPrivateKey.intValue(), p);
+        System.out.println("Le déchiffrement de C et B donne : " + messageTotal);
+
+        System.out.println("Et on a : (m1 * m2).mod(p) = " + (message1.multiply(message2)).mod(p));
+        System.out.println("\nLa propriété homomorphique du chiffrement d'ElGamal est vérifiée");
+    }
+
 }
