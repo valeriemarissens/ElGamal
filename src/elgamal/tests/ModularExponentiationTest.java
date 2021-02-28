@@ -27,11 +27,11 @@ class ModularExponentiationTest {
 
     @Test
     void expMod() {
-        assertEquals(BigInteger.valueOf(16), m.expMod(BigInteger.valueOf(23), BigInteger.valueOf(5), 8));
+        assertEquals(BigInteger.valueOf(16), m.expMod(BigInteger.valueOf(23), BigInteger.valueOf(5), BigInteger.valueOf(8)));
     }
 
     @Test
     void expModBigValue() {
-        assertEquals(BigInteger.valueOf(66), m.expMod(BigInteger.valueOf(97), new BigInteger("989238492034823942399238492"), 47534));
+        assertEquals(BigInteger.valueOf(66), m.expMod(BigInteger.valueOf(97), new BigInteger("989238492034823942399238492"), BigInteger.valueOf(47534)));
     }
 }

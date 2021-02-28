@@ -33,11 +33,9 @@ public class ElGamal {
     public BigInteger[] KeyGen(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
 
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        int x = Math.abs(random.nextInt());
 
-        BigInteger privateKey = BigInteger.valueOf(x);
-        BigInteger publicKey = modularExponentiation.expMod(p,g,x);
-
+        BigInteger privateKey = new BigInteger(1024, random);
+        BigInteger publicKey = modularExponentiation.expMod(p,g,privateKey);
 
         BigInteger[] results = new BigInteger[2];
         results[0] = privateKey;
@@ -49,12 +47,12 @@ public class ElGamal {
     public BigInteger[] Encrypt(BigInteger p , BigInteger g, BigInteger publicKey, BigInteger m) throws NoSuchProviderException, NoSuchAlgorithmException {
 
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        int r = Math.abs(random.nextInt());
+        BigInteger r = new BigInteger(1024, random);
+
         BigInteger y = modularExponentiation.expMod(p, publicKey, r);
 
-
         BigInteger C = (m.multiply(y)).mod(p);
-        BigInteger B = modularExponentiation.expMod(p,g, r);
+        BigInteger B = modularExponentiation.expMod(p,g,r);
 
         BigInteger[] results = new BigInteger[2];
         results[0] = C;
@@ -63,7 +61,7 @@ public class ElGamal {
         return results;
     }
 
-    public BigInteger Decrypt(BigInteger C, BigInteger B, int secretKey, BigInteger p) throws EuclideException {
+    public BigInteger Decrypt(BigInteger C, BigInteger B, BigInteger secretKey, BigInteger p) throws EuclideException {
 
         BigInteger D = modularExponentiation.expMod(p,B,secretKey);
         BigInteger m = (C.multiply(euclide.euclide(D,p)[0])).mod(p);
@@ -100,13 +98,13 @@ public class ElGamal {
 
                 bufferedWriter.write("Le message est : " + message.intValue() + "\n");
                 bufferedWriter.write("Le message chiffré est : C  : " + messageChiffreC.intValue() +  "   -   et B  : " + messageChiffreB.intValue() + "\n");
-                message = Decrypt(messageChiffreC,messageChiffreB, bobPrivateKey.intValue(), p);
+                message = Decrypt(messageChiffreC,messageChiffreB, bobPrivateKey, p);
                 bufferedWriter.write("Le message déchiffré est : " + message.intValue() + "\n\n");
 
                 if(i < 5){
                     System.out.println("Le message est : " + message.intValue());
                     System.out.println("Le message chiffré est :  C  = " + messageChiffreC.intValue() +  "      et B  = " + messageChiffreB.intValue());
-                    message = Decrypt(messageChiffreC,messageChiffreB, bobPrivateKey.intValue(), p);
+                    message = Decrypt(messageChiffreC,messageChiffreB, bobPrivateKey, p);
                     System.out.println("Le message déchiffré est : " + message.intValue() + "\n");
                 }
 
@@ -141,7 +139,7 @@ public class ElGamal {
         BigInteger C = (chiffre1[0].multiply(chiffre2[0])).mod(p);
         BigInteger B = (chiffre1[1].multiply(chiffre2[1])).mod(p);
 
-        BigInteger messageTotal = Decrypt(C,B, bobPrivateKey.intValue(), p);
+        BigInteger messageTotal = Decrypt(C,B, bobPrivateKey, p);
         System.out.println("Le déchiffrement de C et B donne : " + messageTotal);
 
         System.out.println("Et on a : (m1 * m2).mod(p) = " + (message1.multiply(message2)).mod(p));

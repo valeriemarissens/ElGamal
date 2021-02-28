@@ -34,5 +34,7 @@ public class Main {
         elGamal.testThousandTimes(p,g);
 
         elGamal.testHomomorphie(p,g);
+
+
     }
 }

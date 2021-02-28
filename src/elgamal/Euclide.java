@@ -103,7 +103,7 @@ public class Euclide {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("Test de la fonction Euclide()  : \n");
             for (int i = 0; i < 10000; i++) {
-                a = BigInteger.valueOf(Math.abs(random.nextInt()));
+                a = new BigInteger(1024, random);
                 bufferedWriter.write("a = "+ a + "     et      ");
                 BigInteger[] results = euclide(a, p);
                 bufferedWriter.write("a.u + p.v = " + (a.multiply(results[0])).add(p.multiply(results[1])) + "\n");

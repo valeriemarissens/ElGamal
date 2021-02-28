@@ -31,7 +31,8 @@ public class ModularExponentiation {
      * @param a puissance
      * @return A = g**a mod p
      */
-    public BigInteger expMod(BigInteger p, BigInteger g, int a){
+    public BigInteger expMod(BigInteger p, BigInteger g, BigInteger a){
+        BigInteger deux = BigInteger.valueOf(2);
         BigInteger result = BigInteger.ONE;
         g = g.mod(p);
 
@@ -39,13 +40,14 @@ public class ModularExponentiation {
             return BigInteger.ZERO;
         }
 
-        while(a > 0){
-            if((a & 1) != 0)    // Si a est impair
+        while(a.compareTo(BigInteger.ZERO) > 0){    //tant que a > 0
+            if(!a.and(BigInteger.ONE).equals(BigInteger.ZERO))    // Si a est impair
                 result = (result.multiply(g)).mod(p);
 
-            a = a >> 1;     // a = a/2
+            a = a.divide(deux);     // a = a/2
             g = (g.multiply(g)).mod(p);
         }
+
         return result;
 
         /*
@@ -70,7 +72,7 @@ public class ModularExponentiation {
 
     public void testTenThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
 
-        int a;
+        BigInteger a;
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 
         System.out.println("Test de la fonction expMod() : \n");
@@ -85,7 +87,7 @@ public class ModularExponentiation {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("Test de la fonction expMod()  : \n");
             for (int i = 0; i < 10000; i++) {
-                a = Math.abs(random.nextInt());
+                a = new BigInteger(500, random);
                 bufferedWriter.write("a = "+ a + "     et      ");
                 bufferedWriter.write("expMod(p, g, a) = " + expMod(p, g, a) + "\n");
 
