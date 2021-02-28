@@ -12,6 +12,10 @@ import elgamal.Euclide;
 import elgamal.ModularExponentiation;
 import elgamal.exceptions.EuclideException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -25,15 +29,30 @@ public class Main {
         BigInteger p = new BigInteger(hexa, 16);
         BigInteger g = BigInteger.valueOf(2);
 
-        Euclide euclide = new Euclide();
-        ModularExponentiation modularExponentiation = new ModularExponentiation();
-        ElGamal elGamal = new ElGamal();
+        try {
+            File file = new File("test.txt");
 
-        euclide.testTenThousandTimes(p);
-        modularExponentiation.testTenThousandTimes(p,g);
-        elGamal.testThousandTimes(p,g);
+            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        elGamal.testHomomorphie(p,g);
+            Euclide euclide = new Euclide(bufferedWriter);
+            ModularExponentiation modularExponentiation = new ModularExponentiation(bufferedWriter);
+            ElGamal elGamal = new ElGamal(bufferedWriter);
+
+
+            euclide.testTenThousandTimes(p);
+            modularExponentiation.testTenThousandTimes(p,g);
+            elGamal.testThousandTimes(p,g);
+
+            elGamal.testHomomorphie(p,g);
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
 
 
     }

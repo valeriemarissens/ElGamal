@@ -13,6 +13,10 @@ import elgamal.ModularExponentiation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,8 +25,8 @@ class ModularExponentiationTest {
     private ModularExponentiation m;
 
     @BeforeEach
-    void setUp() {
-        m = new ModularExponentiation();
+    void setUp() throws IOException {
+        m = new ModularExponentiation(new BufferedWriter(new FileWriter("test2.txt")));
     }
 
     @Test

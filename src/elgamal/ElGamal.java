@@ -22,12 +22,14 @@ import java.security.SecureRandom;
 
 public class ElGamal {
 
+    private BufferedWriter bufferedWriter;
     private ModularExponentiation modularExponentiation;
     private Euclide euclide;
 
-    public ElGamal(){
-        modularExponentiation = new ModularExponentiation();
-        euclide = new Euclide();
+    public ElGamal(BufferedWriter bufferedWriter){
+        this.bufferedWriter = bufferedWriter;
+        modularExponentiation = new ModularExponentiation(bufferedWriter);
+        euclide = new Euclide(bufferedWriter);
     }
 
     public BigInteger[] KeyGen(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
@@ -77,14 +79,6 @@ public class ElGamal {
 
         System.out.println("Test du chiffrement ElGamal : \n");
         try {
-            File file = new File("test.txt");
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("Test du chiffrement ElGamal  : \n");
             for (int i = 0; i < 100; i++) {
                 message = BigInteger.valueOf(Math.abs(random.nextInt()));
@@ -111,7 +105,6 @@ public class ElGamal {
             }
             System.out.println("L'ensemble des tests se trouvent dans le fichier test.txt \n");
 
-            bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

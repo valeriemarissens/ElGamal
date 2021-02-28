@@ -26,7 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Euclide {
 
-    public Euclide(){}
+    private BufferedWriter bufferedWriter;
+    public Euclide(BufferedWriter bufferedWriter){
+        this.bufferedWriter  = bufferedWriter;
+    }
 
     public BigInteger[] euclide(BigInteger a, BigInteger b) throws EuclideException {
         BigInteger[] results = extendedEuclideanAlgorithm(a, b);
@@ -93,14 +96,6 @@ public class Euclide {
 
         System.out.println("Test de la fonction Euclide() : \n");
        try {
-            File file = new File("test.txt");
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("Test de la fonction Euclide()  : \n");
             for (int i = 0; i < 10000; i++) {
                 a = new BigInteger(1024, random);
@@ -115,7 +110,6 @@ public class Euclide {
             }
             System.out.println("L'ensemble des tests se trouvent dans le fichier test.txt \n");
 
-            bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

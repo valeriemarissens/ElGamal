@@ -22,7 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ModularExponentiation {
 
-    public ModularExponentiation(){}
+    private BufferedWriter bufferedWriter;
+    public ModularExponentiation(BufferedWriter bufferedWriter){
+        this.bufferedWriter = bufferedWriter;
+    }
 
     /**
      *
@@ -77,14 +80,6 @@ public class ModularExponentiation {
 
         System.out.println("Test de la fonction expMod() : \n");
         try {
-            File file = new File("test.txt");
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("Test de la fonction expMod()  : \n");
             for (int i = 0; i < 10000; i++) {
                 a = new BigInteger(500, random);
@@ -98,7 +93,6 @@ public class ModularExponentiation {
             }
             System.out.println("L'ensemble des tests se trouvent dans le fichier test.txt \n");
 
-            bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

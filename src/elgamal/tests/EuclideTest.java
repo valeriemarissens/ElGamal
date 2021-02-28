@@ -14,6 +14,10 @@ import elgamal.exceptions.EuclideException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,8 +26,8 @@ class EuclideTest {
     private Euclide euclide;
 
     @BeforeEach
-    void setUp(){
-        euclide = new Euclide();
+    void setUp() throws IOException {
+        euclide = new Euclide(new BufferedWriter(new FileWriter("test2.txt")));
     }
 
     @Test
