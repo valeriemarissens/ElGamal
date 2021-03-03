@@ -10,28 +10,47 @@
 package elgamal;
 
 import elgamal.exceptions.EuclideException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
+/**
+ * Implémentation du chiffrement El Gamal.
+ */
 public class ElGamal {
 
-    private BufferedWriter bufferedWriter;
-    private ModularExponentiation modularExponentiation;
-    private Euclide euclide;
+    private final BufferedWriter bufferedWriter;
+    private final ModularExponentiation modularExponentiation;
+    private final Euclide euclide;
 
+    /**
+     * Initialisation du buffer et des outils d'Euclide et d'exponentiation
+     * modulaire.
+     *
+     * @param bufferedWriter pour écrire dans test.txt.
+     */
     public ElGamal(BufferedWriter bufferedWriter){
         this.bufferedWriter = bufferedWriter;
         modularExponentiation = new ModularExponentiation(bufferedWriter);
         euclide = new Euclide(bufferedWriter);
     }
 
+    /**
+     * Génération des clés.
+     *
+     * @param p valeur du grand nombre premier p.
+     * @param g valeur du grand nombre premier g.
+     * @return un tableau de taille 2 contenant la clé privée et la clé publique.
+     * @throws NoSuchProviderException lancée quand un fournisseur de sécurité n'est pas
+     * disponible.
+     * @throws NoSuchAlgorithmException lancée quand un algorithme de cryptographie n'est
+     * pas disponible.
+     */
     public BigInteger[] KeyGen(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
 
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
@@ -46,6 +65,19 @@ public class ElGamal {
         return results;
     }
 
+    /**
+     * Chiffrement du message.
+     *
+     * @param p valeur du grand nombre premier p.
+     * @param g valeur du grand nombre premier g.
+     * @param publicKey clé publique.
+     * @param m message à chiffrer.
+     * @return un tableau de taille 2 contenant le couple chiffré C et B.
+     * @throws NoSuchProviderException lancée quand un fournisseur de sécurité n'est pas
+     * disponible.
+     * @throws NoSuchAlgorithmException lancée quand un algorithme de cryptographie n'est
+     * pas disponible.
+     */
     public BigInteger[] Encrypt(BigInteger p , BigInteger g, BigInteger publicKey, BigInteger m) throws NoSuchProviderException, NoSuchAlgorithmException {
 
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
@@ -63,16 +95,35 @@ public class ElGamal {
         return results;
     }
 
-    public BigInteger Decrypt(BigInteger C, BigInteger B, BigInteger secretKey, BigInteger p) throws EuclideException {
+    /**
+     * Déchiffrement du chiffré c.
+     *
+     * @param C chiffré
+     * @param B g**r mod p
+     * @param secretKey clé privée
+     * @param p valeur du grand nombre premier p.
+     * @return le message m.
+     * @throws EuclideException si le pgcd de a et p n'est pas égal à 1.
+     */
+    public BigInteger Decrypt(@NotNull BigInteger C, BigInteger B, BigInteger secretKey, BigInteger p) throws EuclideException {
 
         BigInteger D = modularExponentiation.expMod(p,B,secretKey);
-        BigInteger m = (C.multiply(euclide.euclide(D,p)[0])).mod(p);
 
-        return m;
+        return (C.multiply(euclide.euclide(D,p)[0])).mod(p);
     }
 
-
-
+    /**
+     * Réalise 100 tests avec 100 messages différents et vérifie que les déchiffrés
+     * correspondent bien au message initial.
+     *
+     * @param p valeur du grand nombre premier p.
+     * @param g valeur du grand nombre premier p.
+     * @throws NoSuchProviderException lancée quand un fournisseur de sécurité n'est pas
+     * disponible.
+     * @throws NoSuchAlgorithmException lancée quand un algorithme de cryptographie n'est
+     * pas disponible.
+     * @throws EuclideException lancée si le pgcd de a et p n'est pas égal à 1.
+     */
     public void testThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
         BigInteger message;
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
@@ -111,6 +162,17 @@ public class ElGamal {
     }
 
 
+    /**
+     * Réalise le test de la propriété homomorphique du chiffrement El Gamal.
+     *
+     * @param p valeur du grand nombre premier p.
+     * @param g valeur du grand nombre premier p.
+     * @throws NoSuchProviderException lancée quand un fournisseur de sécurité n'est pas
+     * disponible.
+     * @throws NoSuchAlgorithmException lancée quand un algorithme de cryptographie n'est
+     * pas disponible.
+     * @throws EuclideException lancée si le pgcd de a et p n'est pas égal à 1.
+     */
     public void testHomomorphie(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
         BigInteger message1, message2;
         BigInteger[] chiffre1, chiffre2;
