@@ -12,25 +12,41 @@ package elgamal;
 import elgamal.exceptions.EuclideException;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Vector;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * Implémentation de l'algorithme d'Euclide étendu et tests respectifs.
+ */
 public class Euclide {
 
-    private BufferedWriter bufferedWriter;
+    /**
+     * Sert à écrire dans le fichier test.txt les résultats des tests.
+     */
+    private final BufferedWriter bufferedWriter;
+
+    /**
+     * Initialise le buffer.
+     *
+     * @param bufferedWriter qui sert à écrire.
+     */
     public Euclide(BufferedWriter bufferedWriter){
         this.bufferedWriter  = bufferedWriter;
     }
 
+    /**
+     * Par l'algorithme d'Euclide étendu, retrouve les entiers u et v tels que
+     * a.u + b.v = 1.
+     *
+     * @param a premier grand entier.
+     * @param b deuxième grand entier.
+     * @return un tableau de taille 2 contenant u et v de l'égalité de Bezout.
+     * @throws EuclideException si pgcd(a, b) != 1.
+     */
     public BigInteger[] euclide(BigInteger a, BigInteger b) throws EuclideException {
         BigInteger[] results = extendedEuclideanAlgorithm(a, b);
 
@@ -45,9 +61,9 @@ public class Euclide {
     /**
      * @param a premier entier
      * @param b deuxième entier
-     * @return pgcd(a, b)
+     * @return tableau contenant pgcd(a, b), u et v.
      */
-    public BigInteger[] extendedEuclideanAlgorithm(BigInteger a, BigInteger b){ // todo : renvoie u et v
+    public BigInteger[] extendedEuclideanAlgorithm(BigInteger a, BigInteger b){
         BigInteger[] u = new BigInteger[2];
         BigInteger[] v = new BigInteger[2];
         BigInteger[] r = new BigInteger[2];
@@ -90,6 +106,17 @@ public class Euclide {
         return results;
     }
 
+    /**
+     * Réalise les 10 000 tests de la fonction euclide() avec le nombre p
+     * et 10 000 valeurs différentes de a (tirées aléatoirement avec SecureRandom).
+     *
+     * @param p valeur du grand nombre premier p.
+     * @throws NoSuchProviderException lancée quand un fournisseur de sécurité n'est pas
+     * disponible.
+     * @throws NoSuchAlgorithmException lancée quand un algorithme de cryptographie n'est
+     * pas disponible.
+     * @throws EuclideException lancée si le pgcd de a et p n'est pas égal à 1.
+     */
     public void testTenThousandTimes(BigInteger p) throws NoSuchProviderException, NoSuchAlgorithmException, EuclideException {
         BigInteger a;
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
@@ -99,7 +126,7 @@ public class Euclide {
             bufferedWriter.write("Test de la fonction Euclide()  : \n");
             for (int i = 0; i < 10000; i++) {
                 a = new BigInteger(1024, random);
-                bufferedWriter.write("a = "+ a + "     et      ");
+                bufferedWriter.write("a = "+ a + "\t et \t");
                 BigInteger[] results = euclide(a, p);
                 bufferedWriter.write("a.u + p.v = " + (a.multiply(results[0])).add(p.multiply(results[1])) + "\n");
 
