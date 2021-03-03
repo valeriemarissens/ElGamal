@@ -10,24 +10,34 @@
 package elgamal;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * Implémentation de l'exponentiation modulaire et tests respectifs.
+ */
 public class ModularExponentiation {
 
+    /**
+     * Sert à écrire dans le fichier test.txt les résultats des tests.
+     */
     private BufferedWriter bufferedWriter;
+
+    /**
+     * Initialise le buffer.
+     *
+     * @param bufferedWriter qui sert à écrire.
+     */
     public ModularExponentiation(BufferedWriter bufferedWriter){
         this.bufferedWriter = bufferedWriter;
     }
 
     /**
+     * Implémentation de l'exponentiation modulaire à l'aide de la méthode dite
+     * d'exponentiation binaire.
      *
      * @param p entier
      * @param g entier
@@ -52,27 +62,19 @@ public class ModularExponentiation {
         }
 
         return result;
-
-        /*
-        if (a == 1)
-            return g;
-        else{
-
-            // a est pair.
-            if (a % 2 == 0) {
-                // pow(g**2, a/2)
-                return expMod(p, g.pow(2).mod(p), a / 2);
-            }
-
-            // a est impair.
-            else {
-                // g * pow(g**2, (a-1)/2)
-                return g.multiply(expMod(p, g.pow(2).mod(p), (a - 1) / 2)).mod(p);
-            }
-        }
-         */
     }
 
+    /**
+     * Réalise 10 000 tests de la fonction expMod() avec la valeur de g donnée (2) et
+     * 10 000 valeurs différentes de a (tirées aléatoirement avec SecureRandom).
+     *
+     * @param p valeur du grand nombre premier p.
+     * @param g valeur du grand nombre premier g.
+     * @throws NoSuchProviderException lancée quand un fournisseur de sécurité n'est pas
+     * disponible.
+     * @throws NoSuchAlgorithmException lancée quand un algorithme de cryptographie n'est
+     * pas disponible.
+     */
     public void testTenThousandTimes(BigInteger p, BigInteger g) throws NoSuchProviderException, NoSuchAlgorithmException {
 
         BigInteger a;
@@ -83,7 +85,7 @@ public class ModularExponentiation {
             bufferedWriter.write("Test de la fonction expMod()  : \n");
             for (int i = 0; i < 10000; i++) {
                 a = new BigInteger(500, random);
-                bufferedWriter.write("a = "+ a + "     et      ");
+                bufferedWriter.write("a = "+ a + "\t et \t");
                 bufferedWriter.write("expMod(p, g, a) = " + expMod(p, g, a) + "\n");
 
                 if(i < 5){
